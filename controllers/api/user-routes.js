@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-      res.status(404).json({ message: `Needs values for username, email, and password` });
+      res.status(400).json({ message: `Needs values for username, email, and password` });
       return;
     }
 
@@ -70,7 +70,13 @@ router.post('/', async (req, res) => {
       password
     });
 
-    res.status(200).json(dbUserData);
+    req.session.save(() => {
+      req.session.user_id = dbUserData.id;
+      req.session.username = dbUserData.username;
+      req.session.loggedIn = true;
+
+      res.status(200).json(dbUserData);
+    });
 
   } catch (err) {
     console.log(err);
@@ -82,7 +88,7 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      res.status(404).json({ message: `Needs values for email and password` });
+      res.status(400).json({ message: `Needs values for email and password` });
       return;
     }
 
