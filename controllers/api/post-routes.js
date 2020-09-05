@@ -70,7 +70,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { title, post_text, user_id } = req.body;
+    const { title, post_text } = req.body;
+    const { user_id } = req.session;
     if (!title || !post_text || !user_id) {
       res.status(400).json({ message: 'Needs values for title, post_text, and user_id' });
       return;
@@ -81,6 +82,59 @@ router.post('/', async (req, res) => {
       post_text,
       user_id
     });
+
+    res.status(200).json(dbPostData);
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    const { title } = req.body;
+    if (!title) {
+      res.status(400).json({ message: `Needs title value` });
+      return;
+    }
+
+    const dbPostData = await Post.update(
+      {
+        title
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    );
+
+    if (!dbPostData) {
+      res.status(404).json({ message: `No post found with that id` });
+      return;
+    }
+
+    res.status(200).json(dbPostData);
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const dbPostData = await Post.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    if (!dbPostData) {
+      res.status(404).json({ message: `No post found with that id` });
+      return;
+    }
 
     res.status(200).json(dbPostData);
 
