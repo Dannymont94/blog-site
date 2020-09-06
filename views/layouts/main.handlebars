@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Site</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <header>
+    <h1>Blog Site</h1>
+    <nav>
+      {{#if loggedIn}}
+      <a href="/dashboard">dashboard</a>
+      <button id="logout-btn" class="btn-no-style">logout</button>
+      {{else}}
+      <a href="/login">login / signup</a>
+      {{/if}}
+    </nav>
+  </header>
+  <main>
+    {{{body}}}
+  </main>
+
+  {{#if loggedIn}}
+  <script src="/javascript/logout.js"></script>
+  {{/if}}
+</body>
+</html>
