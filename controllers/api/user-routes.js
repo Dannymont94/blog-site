@@ -114,6 +114,8 @@ router.post('/login', async (req, res) => {
       req.session.user_id = dbUserData.id,
       req.session.username = dbUserData.username,
       req.session.loggedIn = true
+
+      console.log(req.session);
       
       res.status(200).json({
         user: dbUserData,
@@ -127,13 +129,14 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('logout', (req, res) => {
+router.post('/logout', (req, res) => {
+  console.log(req.session);
   if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
     });
   } else {
-    res.status(404).end();
+    res.status(400).end();
   }
 });
 
