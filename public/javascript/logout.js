@@ -10,7 +10,7 @@ async function logout() {
     document.location.replace('/');
   } else {
     // unable to logout
-    console.log('unable to logout');
+    console.log(response.statusText);
   }
 }
 

@@ -21,7 +21,7 @@ async function commentFormHandler(event) {
       document.location.reload();
     } else {
       // unable to post comment
-      console.log('unable to comment');
+      console.log(response.statusText);
     }
   }
 }
